@@ -1,22 +1,72 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Res, Response } from '@nestjs/common';
 import { AppService, Image } from './app.service';
+import {
+  createReadStream,
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'fs';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getImages(): Image[] {
-    return this.appService.getImages();
-  }
-
-  @Get(':filename.json')
-  getImageData(@Param('filename') filename: string): string {
-    return this.appService.getImageData(filename);
+  async getImages(): Promise<Image[]> {
+    return await this.appService.getImages();
   }
 
   @Get(':filename')
-  getImage(@Param('filename') filename: string): string {
-    return this.appService.getImage(filename);
+  async getImage(
+    @Param('filename') filename: string,
+    @Response({ passthrough: true }) res,
+    @Res() response,
+  ): Promise<void> {
+    if (filename === 'favicon.ico') {
+      response.status(404).send();
+      return;
+    }
+    const result = await this.appService.getImage(filename);
+
+    if (result.statusCode !== 200) {
+      response.status(result.statusCode).send();
+      return;
+    }
+
+    if (!existsSync('./caches/')) {
+      mkdirSync('./caches');
+    }
+
+    const cacheFilePath = './caches/' + filename;
+
+    if (existsSync(cacheFilePath + '.json')) {
+      const prevJson = readFileSync(cacheFilePath + '.json', 'utf8');
+      const prev = JSON.parse(prevJson);
+      if (result.headers['last-modified'] === prev['last-modified']) {
+        const readStream = createReadStream(cacheFilePath);
+        readStream.pipe(res);
+        await new Promise((resolve, reject) => {
+          readStream.on('error', reject);
+          readStream.on('end', resolve);
+        });
+        return;
+      }
+    }
+    writeFileSync(cacheFilePath + '.json', JSON.stringify(result.headers));
+
+    const writeStream = createWriteStream(cacheFilePath);
+    result.stream.pipe(writeStream);
+
+    writeStream.on('finish', () => {
+      const readStream = createReadStream(cacheFilePath);
+      readStream.pipe(res);
+    });
+
+    await new Promise((resolve, reject) => {
+      writeStream.on('error', reject);
+      writeStream.on('end', resolve);
+    });
   }
 }
