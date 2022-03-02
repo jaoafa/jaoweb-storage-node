@@ -41,7 +41,7 @@
     "axios": "0.26.0",
     "config": "3.3.7",
     "eslint": "8.10.0",
-    "eslint-config-prettier": "8.4.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
     "jest": "27.5.1",
     "mysql2": "2.3.3",
