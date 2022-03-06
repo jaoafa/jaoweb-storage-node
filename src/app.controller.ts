@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Res, Response } from '@nestjs/common';
-import { AppService, Image } from './app.service';
 import {
   createReadStream,
   createWriteStream,
@@ -8,6 +7,8 @@ import {
   readFileSync,
   writeFileSync,
 } from 'fs';
+import { AppService, Image } from './app.service';
+import { redirect_files } from './utils/redirect_files';
 
 @Controller()
 export class AppController {
@@ -28,6 +29,11 @@ export class AppController {
       response.status(404).send();
       return;
     }
+    if (redirect_files[filename] !== undefined) {
+      response.redirect(301, `/${redirect_files[filename]}`);
+      return;
+    }
+
     const result = await this.appService.getImage(filename);
 
     if (result.statusCode !== 200) {
