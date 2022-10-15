@@ -1,4 +1,4 @@
-import axios, { AxiosResponseHeaders } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { WriteStream } from 'fs';
 
 export type ConoHaToken = string;
@@ -69,7 +69,7 @@ export class ConoHaObjectStorage {
 
   async getObject(options: ConoHaGetObjectOptions): Promise<{
     statusCode: number;
-    headers: AxiosResponseHeaders;
+    headers: AxiosResponse['headers'];
     stream: WriteStream;
   }> {
     const getObjectUrl =
