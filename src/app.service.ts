@@ -5,7 +5,7 @@ import {
 } from '@/utils/conoha-object-storage';
 import * as config from 'config';
 import { WriteStream } from 'fs';
-import { AxiosResponseHeaders } from 'axios';
+import { AxiosResponse } from 'axios';
 
 export interface Image {
   itemId: string;
@@ -42,7 +42,7 @@ export class AppService {
 
   async getImage(filename: string): Promise<{
     statusCode: number;
-    headers: AxiosResponseHeaders;
+    headers: AxiosResponse['headers'];
     stream: WriteStream;
   }> {
     const cos = new ConoHaObjectStorage();
