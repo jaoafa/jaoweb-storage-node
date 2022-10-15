@@ -39,6 +39,7 @@ jobs:
           package=$(cat package.json | jq '.scripts | has("package")')
           lint=$(cat package.json | jq '.scripts | has("lint")')
           test=$(cat package.json | jq '.scripts | has("test")')
+          build=$(cat package.json | jq '.scripts | has("build")')
 
           echo "compile: $compile"
           echo "build: $build"
@@ -46,6 +47,7 @@ jobs:
           echo "package: $package"
           echo "lint: $lint"
           echo "test: $test"
+          echo "build: $build"
 
           echo "::set-output name=compile::$compile"
           echo "::set-output name=build::$build"
@@ -53,6 +55,7 @@ jobs:
           echo "::set-output name=package::$package"
           echo "::set-output name=lint::$lint"
           echo "::set-output name=test::$test"
+          echo "::set-output name=build::$build"
 
       - name: 🛠 Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -87,6 +90,10 @@ jobs:
         run: |
           yarn build
           yarn generate
+
+      - name: 🏗️ Run build
+        if: steps.package-json.outputs.build == 'true'
+        run: yarn build
 
       - name: 🧪 Run tests
         if: steps.package-json.outputs.test == 'true'
