@@ -51,7 +51,7 @@
     "ts-loader": "9.4.2",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.0.3",
+    "typescript": "5.0.4",
     "winston": "3.8.2",
     "winston-daily-rotate-file": "4.7.1"
   },
