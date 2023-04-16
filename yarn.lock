@@ -4043,10 +4043,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mysql2@3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.2.2.tgz#d9cc4d1f4b46593c59cc0f52f4df98ee2fc43067"
-  integrity sha512-h+MYStGolwzn9bNpnq3WtwQar6XVPZKbsMdkIbZ9xTH27BSMpzBdZiilALI9LP2MO1Ky1LlgcWPLRM/e6Eilqg==
+mysql2@3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-3.2.3.tgz#7d6a7b5728d5adf2e71b141ba39b01e68944c05e"
+  integrity sha512-aethLO9cSAGba9gOXzNayuyq2GAVTKc3vwr+uETOX1yjUuH6MS6D5ewhUqkaukmtjzrb5C9ML7YmmmRBjQ3r3Q==
   dependencies:
     denque "^2.1.0"
     generate-function "^2.3.1"
